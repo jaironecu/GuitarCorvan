@@ -1,0 +1,40 @@
+name: Compilar APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar código
+      uses: actions/checkout@v4
+
+    - name: Extraer archivo ZIP
+      run: unzip GuitarCorvan.zip -d codigo_fuente
+
+    - name: Configurar Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Configurar Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: '8.5'
+
+    - name: Construir la aplicacion
+      run: |
+        cd codigo_fuente
+        if [ -d "GuitarCorvan" ]; then cd GuitarCorvan; fi
+        gradle assembleDebug
+
+    - name: Entregar APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: aplicacion-guitar-corvan
+        path: codigo_fuente/**/app/build/outputs/apk/debug/*.apk
