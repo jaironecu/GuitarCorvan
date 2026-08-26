@@ -31,6 +31,8 @@ jobs:
       run: |
         cd codigo_fuente
         if [ -d "GuitarCorvan" ]; then cd GuitarCorvan; fi
+        echo "android.useAndroidX=true" > gradle.properties
+        echo "android.enableJetifier=true" >> gradle.properties
         gradle assembleDebug
 
     - name: Entregar APK
