@@ -40,6 +40,9 @@ jobs:
         # Descargamos el motor de audio exclusivo para Android y lo conectamos
         mkdir -p app/libs
         curl -sL "https://0110.be/releases/TarsosDSP/TarsosDSP-latest/TarsosDSP-Android-latest.jar" -o app/libs/tarsos.jar
+        
+        # Damos un salto de linea para evitar errores de sintaxis
+        echo "" >> app/build.gradle.kts
         echo 'dependencies { implementation(files("libs/tarsos.jar")) }' >> app/build.gradle.kts
         
         gradle assembleDebug
