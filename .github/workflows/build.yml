@@ -33,6 +33,10 @@ jobs:
         if [ -d "GuitarCorvan" ]; then cd GuitarCorvan; fi
         echo "android.useAndroidX=true" > gradle.properties
         echo "android.enableJetifier=true" >> gradle.properties
+        
+        # Le enseñamos al robot la tienda secreta de TarsosDSP
+        sed -i 's|mavenCentral()|mavenCentral()\n        maven("https://mvn.0110.be/releases")|g' settings.gradle.kts
+        
         gradle assembleDebug
 
     - name: Entregar APK
