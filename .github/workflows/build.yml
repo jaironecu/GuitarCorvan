@@ -34,8 +34,13 @@ jobs:
         echo "android.useAndroidX=true" > gradle.properties
         echo "android.enableJetifier=true" >> gradle.properties
         
-        # Le enseñamos al robot la tienda secreta de TarsosDSP
-        sed -i 's|mavenCentral()|mavenCentral()\n        maven("https://mvn.0110.be/releases")|g' settings.gradle.kts
+        # Limpiamos las versiones incorrectas de TarsosDSP
+        sed -i -e '/[Tt]arsos/d' app/build.gradle.kts
+        
+        # Descargamos el motor de audio exclusivo para Android y lo conectamos
+        mkdir -p app/libs
+        curl -sL "https://0110.be/releases/TarsosDSP/TarsosDSP-latest/TarsosDSP-Android-latest.jar" -o app/libs/tarsos.jar
+        echo 'dependencies { implementation(files("libs/tarsos.jar")) }' >> app/build.gradle.kts
         
         gradle assembleDebug
 
